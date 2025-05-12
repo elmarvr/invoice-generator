@@ -9,8 +9,6 @@ export default eventHandler(async (event) => {
     return InputSchema.parse(construct(data as any));
   });
 
-  return query;
-
   const google = useGoogle();
   const result = await generateObject({
     model: google("gemini-1.5-flash"),
@@ -32,24 +30,15 @@ export default eventHandler(async (event) => {
   const url = getRequestURL(event);
   const qs = toQueryString(invoice);
 
-  return {
-    url: `${url.origin}/pdf?${qs}`,
-    invoice,
-  };
+  await page.goto(`${url.origin}/pdf?${qs}`, {
+    waitUntil: "domcontentloaded",
+  });
 
-  // console.log(`${url.origin}/pdf`);
+  setHeader(event, "content-type", "application/pdf");
 
-  // await page.goto(`${url.origin}/pdf?${qs}`, {
-  //   waitUntil: "domcontentloaded",
-  // });
-
-  // console.log("3");
-
-  // setHeader(event, "content-type", "application/pdf");
-
-  // return page.pdf({
-  //   format: "A4",
-  // });
+  return page.pdf({
+    format: "A4",
+  });
 });
 
 export function useGoogle() {
