@@ -25,27 +25,29 @@ export default eventHandler(async (event) => {
     items: result.object.items,
   };
 
-  console.log("1");
   const { page } = await hubBrowser();
-
-  console.log("2");
 
   const url = getRequestURL(event);
   const qs = toQueryString(invoice);
 
-  console.log(`${url.origin}/pdf`);
+  return {
+    url: `${url.origin}/pdf?${qs}`,
+    invoice,
+  };
 
-  await page.goto(`${url.origin}/pdf?${qs}`, {
-    waitUntil: "domcontentloaded",
-  });
+  // console.log(`${url.origin}/pdf`);
 
-  console.log("3");
+  // await page.goto(`${url.origin}/pdf?${qs}`, {
+  //   waitUntil: "domcontentloaded",
+  // });
 
-  setHeader(event, "content-type", "application/pdf");
+  // console.log("3");
 
-  return page.pdf({
-    format: "A4",
-  });
+  // setHeader(event, "content-type", "application/pdf");
+
+  // return page.pdf({
+  //   format: "A4",
+  // });
 });
 
 export function useGoogle() {
