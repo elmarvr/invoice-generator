@@ -25,14 +25,21 @@ export default eventHandler(async (event) => {
     items: result.object.items,
   };
 
+  console.log("1");
   const { page } = await hubBrowser();
+
+  console.log("2");
 
   const url = getRequestURL(event);
   const qs = toQueryString(invoice);
 
+  console.log(`${url.origin}/pdf`);
+
   await page.goto(`${url.origin}/pdf?${qs}`, {
     waitUntil: "domcontentloaded",
   });
+
+  console.log("3");
 
   setHeader(event, "content-type", "application/pdf");
 
