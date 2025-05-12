@@ -9,6 +9,8 @@ export default eventHandler(async (event) => {
     return InputSchema.parse(construct(data as any));
   });
 
+  return query;
+
   const google = useGoogle();
   const result = await generateObject({
     model: google("gemini-1.5-flash"),
