@@ -3,7 +3,7 @@ import {
   SelectItem as ArkSelectItem,
   SelectItemText as ArkSelectItemText,
   type SelectItemProps,
-} from "@ark-ui/vue/Select";
+} from "@ark-ui/vue/select";
 
 const props = defineProps<SelectItemProps>();
 const delegated = reactiveOmit(props, ["class"]);

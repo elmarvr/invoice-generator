@@ -16,7 +16,7 @@ const delegated = reactiveOmit(props, ["class", "placeholder"]);
 <template>
   <ArkSelectControl v-bind="delegated">
     <ArkSelectTrigger
-      class="w-full px-4 hover:cursor-pointer text-sm h-8 border rounded-md border-input hover:bg-input transition"
+      class="w-full px-4 hover:cursor-pointer text-sm h-8 border rounded-md border-input hover:bg-accent hover:text-accent-foreground transition"
     >
       <slot>
         <ArkSelectValueText :placeholder="placeholder" />

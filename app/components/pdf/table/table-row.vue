@@ -12,10 +12,7 @@ const delegated = reactiveOmit(props, ["class"]);
 </script>
 
 <template>
-  <ark.tbody
-    :class="cx('[&_tr:last-child]:border-0', props.class)"
-    v-bind="delegated"
-  >
+  <ark.tr :class="cx('border-b', props.class)" v-bind="delegated">
     <slot />
-  </ark.tbody>
+  </ark.tr>
 </template>

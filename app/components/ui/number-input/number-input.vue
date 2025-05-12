@@ -15,6 +15,7 @@ const field = useField<string>();
 const numberInput = useNumberInput(
   computed(() => {
     return {
+      inputMode: props.inputMode,
       formatOptions: props.formatOptions,
       pattern: (props.formatOptions ? null : props.pattern) as never as string,
       value: field.value.value,

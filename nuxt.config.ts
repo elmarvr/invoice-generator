@@ -11,6 +11,12 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  runtimeConfig: {},
-  hub: {},
+  runtimeConfig: {
+    cloudflareAccountId: "",
+    cloudflareGatewayId: "",
+    googleAiToken: "",
+  },
+  hub: {
+    browser: true,
+  },
 });

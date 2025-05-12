@@ -4,7 +4,7 @@ import type { ButtonHTMLAttributes } from "vue";
 import { ark, type PolymorphicProps } from "@ark-ui/vue/factory";
 
 const buttonVariants = cva({
-  base: "px-4 h-9 rounded-md text-sm font-medium transition-colors",
+  base: "px-4 h-8 rounded-md gap-4 flex items-center text-sm font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none",
   variants: {
     variant: {
       default: "bg-primary text-primary-foreground hover:bg-primary/80",
@@ -21,6 +21,7 @@ interface ButtonProps extends PolymorphicProps {
   variant?: ButtonVariants["variant"];
   class?: ClassValue;
   type?: ButtonHTMLAttributes["type"];
+  disabled?: ButtonHTMLAttributes["disabled"];
 }
 
 const props = defineProps<ButtonProps>();
