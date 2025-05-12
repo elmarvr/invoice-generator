@@ -39,12 +39,15 @@ export const OutputSchema = InvoiceSchema.extend({
   due: z.coerce.date(),
 
   currency: InvoiceSchema.shape.currency.transform((v) => v[0]!),
-  rate: z.coerce.number(),
+  rate: z.string().transform((v) => {
+    v = v.replace(/[^0-9.-]+/g, "");
+    return parseFloat(v);
+  }),
 
   items: z
     .object({
       description: z.string(),
-      quantity: z.coerce.number(),
+      quantity: z.string().transform((v) => parseFloat(v)),
     })
     .array(),
 });
