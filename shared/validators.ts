@@ -1,5 +1,13 @@
 import { z } from "zod";
 
+export const EntitySchema = z.object({
+  name: z.string(),
+  address: z.string().optional(),
+  postal: z.string().optional(),
+  city: z.string().optional(),
+  country: z.string().optional(),
+});
+
 export const InvoiceSchema = z.object({
   title: z.string(),
   invoice: z.string(),
@@ -10,21 +18,8 @@ export const InvoiceSchema = z.object({
   currency: z.enum(["USD", "EUR", "GBP"]).array(),
   rate: z.string(),
 
-  from: z.object({
-    name: z.string(),
-    postal: z.string(),
-    city: z.string(),
-    country: z.string(),
-    address: z.string(),
-  }),
-
-  to: z.object({
-    name: z.string(),
-    postal: z.string().optional(),
-    city: z.string().optional(),
-    address: z.string().optional(),
-    country: z.string().optional(),
-  }),
+  from: EntitySchema,
+  to: EntitySchema,
 
   items: z
     .object({

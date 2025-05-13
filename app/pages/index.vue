@@ -23,10 +23,22 @@ const onSubmit: SubmissionHandler<typeof InputSchema> = async (data) => {
 const selectedCurrency = computed(() => {
   return form.value?.api.values.currency[0] ?? initialValues.currency[0];
 });
+
+onBeforeRouteLeave(() => {
+  isLoading.value = false;
+});
 </script>
 
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto p-8">
+    <div class="max-w-2xl">
+      <h1 class="text-3xl font-bold mb-4">AI Invoice Generator</h1>
+      <p class="mb-8">
+        Describe your work or hours in your own words. Google AI will turn it
+        into a professional invoice. Just fill in the details below and submit.
+      </p>
+    </div>
+
     <UiForm
       :schema="InputSchema"
       @submit="onSubmit"
@@ -34,68 +46,12 @@ const selectedCurrency = computed(() => {
       :initial-values="initialValues"
     >
       <div class="grid grid-cols-2 gap-6">
-        <UiFieldset class="col-start-1">
+        <FieldsetEntity name="from">
           <UiFieldsetLegend>From</UiFieldsetLegend>
-          <UiField name="from.name">
-            <UiFieldLabel>Name</UiFieldLabel>
-            <UiFieldInput />
-            <UiFieldError />
-          </UiField>
-          <UiField name="from.address">
-            <UiFieldLabel>Address</UiFieldLabel>
-            <UiFieldInput />
-            <UiFieldError />
-          </UiField>
-          <div class="flex gap-6 *:flex-1">
-            <UiField name="from.postal">
-              <UiFieldLabel>Postal</UiFieldLabel>
-              <UiFieldInput />
-              <UiFieldError />
-            </UiField>
-
-            <UiField name="from.city">
-              <UiFieldLabel>City</UiFieldLabel>
-              <UiFieldInput />
-              <UiFieldError />
-            </UiField>
-          </div>
-          <UiField name="from.country">
-            <UiFieldLabel>Country</UiFieldLabel>
-            <UiFieldInput />
-            <UiFieldError />
-          </UiField>
-        </UiFieldset>
-
-        <UiFieldset>
+        </FieldsetEntity>
+        <FieldsetEntity name="to">
           <UiFieldsetLegend>To</UiFieldsetLegend>
-          <UiField name="to.name">
-            <UiFieldLabel>Name</UiFieldLabel>
-            <UiFieldInput />
-            <UiFieldError />
-          </UiField>
-          <UiField name="to.address">
-            <UiFieldLabel>Address</UiFieldLabel>
-            <UiFieldInput />
-            <UiFieldError />
-          </UiField>
-          <div class="flex gap-6 *:flex-1">
-            <UiField name="to.postal">
-              <UiFieldLabel>Postal</UiFieldLabel>
-              <UiFieldInput />
-              <UiFieldError />
-            </UiField>
-            <UiField name="to.city">
-              <UiFieldLabel>City</UiFieldLabel>
-              <UiFieldInput />
-              <UiFieldError />
-            </UiField>
-          </div>
-          <UiField name="to.country">
-            <UiFieldLabel>Country</UiFieldLabel>
-            <UiFieldInput />
-            <UiFieldError />
-          </UiField>
-        </UiFieldset>
+        </FieldsetEntity>
       </div>
 
       <UiFieldset class="grid grid-cols-2 gap-6">
@@ -156,14 +112,14 @@ const selectedCurrency = computed(() => {
           </div>
         </div>
         <UiField name="prompt">
-          <UiFieldLabel>Description</UiFieldLabel>
+          <UiFieldLabel>Hours description</UiFieldLabel>
           <UiFieldTextarea class="flex-1" />
           <UiFieldError />
         </UiField>
       </UiFieldset>
 
-      <UiButton type="submit" :disabled="isLoading">
-        Submit
+      <UiButton type="submit" :disabled="isLoading" class="h-10">
+        Generate Invoice
         <Icon
           v-if="isLoading"
           name="lucide:loader-circle"
