@@ -3,13 +3,14 @@ import { generateObject } from "ai";
 import { InputSchema, InvoiceSchema } from "#shared/validators";
 import { toQueryString } from "#shared/utils";
 import { construct } from "radash";
+import type { H3Event } from "h3";
 
 export default eventHandler(async (event) => {
   const query = await getValidatedQuery(event, (data) => {
     return InputSchema.parse(construct(data as any));
   });
 
-  const google = useGoogle();
+  const google = useGoogle(event);
   const result = await generateObject({
     model: google("gemini-1.5-flash"),
     schema: InvoiceSchema.pick({
@@ -24,6 +25,8 @@ export default eventHandler(async (event) => {
     title: query.title ?? result.object.title,
     items: result.object.items,
   };
+
+  return invoice;
 
   const { page } = await hubBrowser();
 
@@ -41,8 +44,8 @@ export default eventHandler(async (event) => {
   });
 });
 
-export function useGoogle() {
-  const config = useRuntimeConfig();
+export function useGoogle(event: H3Event) {
+  const config = useRuntimeConfig(event);
 
   return createGoogleGenerativeAI({
     baseURL: `https://gateway.ai.cloudflare.com/v1/${config.cloudflareAccountId}/${config.cloudflareGatewayId}/google-ai-studio/v1beta`,
