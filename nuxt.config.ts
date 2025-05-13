@@ -19,4 +19,9 @@ export default defineNuxtConfig({
   hub: {
     browser: true,
   },
+  nitro: {
+    experimental: {
+      asyncContext: true,
+    },
+  },
 });

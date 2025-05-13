@@ -3,8 +3,6 @@ import { generateObject } from "ai";
 import { InputSchema, InvoiceSchema } from "#shared/validators";
 import { toQueryString } from "#shared/utils";
 import { construct } from "radash";
-import type { H3Event } from "h3";
-import { useRequestEvent } from "nuxt/app";
 
 export default eventHandler(async (event) => {
   const query = await getValidatedQuery(event, (data) => {
@@ -44,7 +42,7 @@ export default eventHandler(async (event) => {
 });
 
 export function useGoogle() {
-  const event = useRequestEvent();
+  const event = useEvent();
   const config = useRuntimeConfig(event);
 
   return createGoogleGenerativeAI({
