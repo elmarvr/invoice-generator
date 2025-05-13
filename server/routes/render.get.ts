@@ -4,13 +4,14 @@ import { InputSchema, InvoiceSchema } from "#shared/validators";
 import { toQueryString } from "#shared/utils";
 import { construct } from "radash";
 import type { H3Event } from "h3";
+import { useRequestEvent } from "nuxt/app";
 
 export default eventHandler(async (event) => {
   const query = await getValidatedQuery(event, (data) => {
     return InputSchema.parse(construct(data as any));
   });
 
-  const google = useGoogle(event);
+  const google = useGoogle();
   const result = await generateObject({
     model: google("gemini-1.5-flash"),
     schema: InvoiceSchema.pick({
@@ -25,8 +26,6 @@ export default eventHandler(async (event) => {
     title: query.title ?? result.object.title,
     items: result.object.items,
   };
-
-  return invoice;
 
   const { page } = await hubBrowser();
 
@@ -44,7 +43,8 @@ export default eventHandler(async (event) => {
   });
 });
 
-export function useGoogle(event: H3Event) {
+export function useGoogle() {
+  const event = useRequestEvent();
   const config = useRuntimeConfig(event);
 
   return createGoogleGenerativeAI({
